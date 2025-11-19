@@ -1,0 +1,24 @@
+{
+  "name": "@3d/imageviewer",
+  "private": true,
+  "version": "0.1.0",
+  "description": "three d image",
+  "keywords": [
+    "3d"
+  ],
+  "license": "ISC",
+  "author": "atlemagnussen",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "vite": "^7.2.2"
+  },
+  "dependencies": {
+    "@photo-sphere-viewer/core": "^5.14.0",
+    "lit": "^3.3.1"
+  }
+}
