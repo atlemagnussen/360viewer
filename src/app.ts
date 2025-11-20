@@ -1,43 +1,48 @@
-import { css, html, LitElement, PropertyValues } from "lit";
-import { customElement, query } from "lit/decorators.js";
+import { Viewer } from "@photo-sphere-viewer/core"
 
-
-import { Viewer } from '@photo-sphere-viewer/core';
-
-@customElement("main-app")
-export class App extends LitElement {
-    // static styles = css`
-    //     :host {
-    //         height: 95%;
-    //         max-height: 100%;
-    //         width: 100%;
-    //         max-width: 100%;
-    //     }
-    //     div#viewer {
-    //         width: 100%;
-    //         height: 100%;
-    //     }
-    // `
+export class MainApp extends HTMLElement {
+    static styles = String.raw`
+        :host {
+            height: 95%;
+            max-height: 100%;
+            width: 100%;
+            max-width: 100%;
+        }
+        div#viewer {
+            width: 100%;
+            height: 100%;
+        }
+    `
     _viewer?: Viewer
 
-    @query("#viewer")
-    viewerEl?: HTMLDivElement
+    /**
+     *
+     */
+    constructor() {
+        super()
+        const sheet = new CSSStyleSheet()
+        sheet.replaceSync(MainApp.styles)
+        const shadow = this.attachShadow({mode: "open"})
+        shadow.adoptedStyleSheets.push(sheet)
+    }
+    connectedCallback() {
+        const shadow = this.shadowRoot!
 
-    protected firstUpdated(_changedProperties: PropertyValues) {
-        if (this.viewerEl) {
-            this._viewer = new Viewer({
-                container: this.viewerEl,
-                panorama: 'IMG_20231008_120641_00_003.jpg',
-                fisheye: true
-            })
-        }
-    }
-    protected createRenderRoot(): HTMLElement | DocumentFragment {
-        return this
-    }
-    render() {
-        return html`
-            <div id="viewer"></div>
-        `
+        const css = document.createElement("link")
+        css.rel = "stylesheet"
+        css.href = "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css"
+        shadow.appendChild(css)
+
+        const viewerEl = document.createElement("div")
+        viewerEl.id = "viewer"
+        
+        shadow.appendChild(viewerEl)
+        
+        this._viewer = new Viewer( {
+            container: viewerEl,
+            panorama: 'IMG_20231008_120641_00_003.jpg',
+            fisheye: true
+        })
     }
 }
+customElements.define("main-app", MainApp)
