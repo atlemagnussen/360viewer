@@ -8,4 +8,5 @@
 //     panorama: 'IMG_20231008_120641_00_003.jpg',
 //     fisheye: true
 // })
-import "@3d/app.js"
+//import "@3d/single360.js"
+import "@3d/tour360.js"
