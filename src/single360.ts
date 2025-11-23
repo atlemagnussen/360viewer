@@ -1,9 +1,10 @@
 import { Viewer } from "@photo-sphere-viewer/core"
+import { BaseElement } from "./baseElement.js"
 
-export class Single360 extends HTMLElement {
+export class Single360 extends BaseElement {
     static styles = String.raw`
         :host {
-            height: 95%;
+            height: 100%;
             max-height: 100%;
             width: 100%;
             max-width: 100%;
@@ -15,16 +16,6 @@ export class Single360 extends HTMLElement {
     `
     _viewer?: Viewer
 
-    /**
-     *
-     */
-    constructor() {
-        super()
-        const sheet = new CSSStyleSheet()
-        sheet.replaceSync(Single360.styles)
-        const shadow = this.attachShadow({mode: "open"})
-        shadow.adoptedStyleSheets.push(sheet)
-    }
     connectedCallback() {
         const shadow = this.shadowRoot!
 
@@ -40,7 +31,7 @@ export class Single360 extends HTMLElement {
         
         this._viewer = new Viewer( {
             container: viewerEl,
-            panorama: 'IMG_20231012_015904_00_merged.jpg',
+            panorama: 'jern5.jpg',
             fisheye: true,
             minFov: 1
         })
