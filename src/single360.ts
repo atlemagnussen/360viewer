@@ -14,7 +14,25 @@ export class Single360 extends BaseElement {
             height: 100%;
         }
     `
+    _viewerEl?: HTMLDivElement
     _viewer?: Viewer
+
+    static observedAttributes = ["url"]
+    attributeChangedCallback(name: string, oldValue: string, newValue:string) {
+        if (name === "url")
+            this.url = newValue
+    }
+
+    _url = ""
+    get url() {
+        return this._url
+    }
+    set url(value: string) {
+        if (this.url !== value) {
+            this._url = value
+            this.render()
+        }
+    }
 
     connectedCallback() {
         const shadow = this.shadowRoot!
@@ -24,15 +42,28 @@ export class Single360 extends BaseElement {
         css.href = "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css"
         shadow.appendChild(css)
 
-        const viewerEl = document.createElement("div")
-        viewerEl.id = "viewer"
+        this._viewerEl = document.createElement("div")
+        this._viewerEl.id = "viewer"
         
-        shadow.appendChild(viewerEl)
-        
+        shadow.appendChild(this._viewerEl)
+        // var urlSet = this.getAttribute("url")
+        // if (urlSet)
+        //     this.url = urlSet
+
+        this.render()
+    }
+
+    render() {
+        if (!this._viewerEl || !this.url)
+            return
+
+        if (this._viewer) {
+            this._viewer.destroy()
+        }
         this._viewer = new Viewer( {
-            container: viewerEl,
-            panorama: 'jern5.jpg',
-            fisheye: true,
+            container: this._viewerEl,
+            panorama: this._url,
+            fisheye: false,
             minFov: 1
         })
     }
